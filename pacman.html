@@ -1,76 +1,27 @@
-<canvas id="labyrinth" height="750" width="750"></canvas>
-<script>
-    document.addEventListener("keydown", keyPress)
-    var can = document.getElementById("labyrinth");
-    var ctx = can.getContext("2d");
-    ctx.fillStyle = "darkblue";
-    ctx.fillRect(0, 0, can.width, can.height);
-
-    var pacman = {
-        x: 250,
-        y: 250
-    }
-    var vel_x = 0;
-    var vel_y = 0;
-
-    var pacman_sprite = new Image();
-
-    setInterval(main, 1000 / 30);
-
-    function sprite(options) {
-        var that = {};
-        that.width = options.width;
-        that.height = options.height;
-        that.image = options.image;
-        that.context = options.context;
-        that.render = function () {
-            that.drawImage(that.Image, 0, 0, that.width, that.height, 0, 0, that.width, that.height)
-        }
-        return that;
+<style>
+    body {
+        margin: 0 0;
     }
 
-    function keyPress(evt) {
-        switch (evt.keyCode) {
-            case 37:
-                vel_x = -1;
-                vel_y = 0;
-                break
-            case 38:
-                vel_y = -1;
-                vel_x = 0;
-                break
-            case 39:
-                vel_x = 1;
-                vel_y = 0;
-                break
-            case 40:
-                vel_y = 1;
-                vel_x = 0;
-                break
-            case 87:
-                vel_y = -1;
-                vel_x = 0;
-                break
-            case 65:
-                vel_x = -1;
-                vel_y = 0;
-                break
-            case 83:
-                vel_y = 1;
-                vel_x = 0;
-                break
-            case 68:
-                vel_x = 1;
-                vel_y = 0;
-                break
-        }
+    #scorebox {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 20px;
     }
 
-    function main() {
-        if (vel_x == 1) {
-            sprite.src = "pacman.gif"
-        }
-        pacman.x += vel_x;
-        pacman.y += vel_y;
+    #labyrinth {
+        margin: 0 15%;
     }
-</script>
+</style>
+<div id="scorebox">
+    Score:
+    <p id="score">
+
+    </p>
+    Lives:
+    <p id="lives">
+    </p>
+</div>
+<canvas id="labyrinth" height="700" width="875"></canvas>
+
+<script src="a-star.js"></script>
+<script src="pacman.js"></script>

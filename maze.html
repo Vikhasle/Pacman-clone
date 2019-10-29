@@ -1,0 +1,84 @@
+<canvas id="can" width="750" height="750"></canvas>
+<script>
+    var can = document.getElementById("can")
+    var ctx = can.getContext("2d");
+    var sqaure = 15;
+    var labyrinth = [];
+
+    function shuffle(array) {
+        var currentIndex = array.length,
+            temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }
+
+    function adjecent(p0, p1) {
+        if (p0[0] - 1 == p1[0]) return true;
+        if (p0[0] + 1 == p1[0]) return true;
+        if (p0[1] + 1 == p1[1]) return true;
+        if (p0[1] - 1 == p1[1]) return true;
+        return false;
+    }
+
+    for (var iy = 0; iy < 750; iy += 15) {
+        for (var ix = 0; ix < 750; ix += 15) {
+            var open = [Math.floor(Math.random() * )]
+            if (ix == 0 || iy == 0) {
+                labyrinth.push([ix, iy]);
+                ctx.fillRect(ix, iy, sqaure, sqaure);
+            } else if (ix == 750 - sqaure || iy == 750 - sqaure) {
+                labyrinth.push([ix, iy]);
+                ctx.fillRect(ix, iy, sqaure, sqaure);
+            }
+        }
+    }
+    times = 2;
+
+
+
+    var AD = ['E', 'W', 'N', 'S'];
+    var DX = [1, -1, 0, 0]; // 1 or 2
+    var DY = [0, 0, 1, -1]; // 1 or 2
+    //grid[y][x]=di
+    var OPP = ['W', 'E', 'S', 'N'];
+
+
+    function maze(maze) {
+        for (var y = 0; y < maze.length; y++) {
+            wall = 0
+            for (var x = 0; x < maze[y].length; x++) {
+                var flip = Math.floor(Math.random() * 100)
+                if (x > 2 && wall == 0) {
+                    maze[y][x] = 1;
+                }
+                if (flip < 50) {
+                    wall++;
+                    maze[y][x] = 1;
+                }
+            }
+        };
+    }
+
+    var grids = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+    ]
+
+    maze(grids);
+    console.log(grids);
+</script>
