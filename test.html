@@ -1,0 +1,35 @@
+<canvas id="can"></canvas>
+<script>
+    var can = document.getElementById("can")
+    can.height = 400;
+    can.width = 400;
+    var ctx = can.getContext("2d");
+    class sprite {
+        constructor(width, height, source, x, y) {
+            this.image = new Image();
+            this.image.src = source;
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y;
+            this.count = 0;
+            this.update = function () {
+                //void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+                ctx.clearRect(0, 0, this.width, this.height);
+                ctx.drawImage(this.image, this.count * 50, 0, this.width, this.height, this.x, this.y, this
+                    .width, this.height);
+
+                if (this.count == 2)
+                    this.count = 0;
+                else
+                    this.count++;
+            };
+        }
+    }
+    var test = new sprite(50, 50, "sprites/test.png", 0, 0);
+    setInterval(main, 50);
+
+    function main() {
+        test.update();
+    }
+</script>

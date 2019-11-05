@@ -18,16 +18,22 @@
     #labyrinth {
         margin: 0 15%;
     }
+
+    #lives {
+        width: 400px;
+        height: 200px;
+        border: 2px black;
+    }
 </style>
 <div id="scorebox">
     <div id="score">0</div>
     Lives:
-    <p id="lives">
-    </p>
+    <div id="lives">
+        <img src="sprites/pacman.png">
+        <img src="sprites/pacman.png">
+        <img src="sprites/pacman.png">
+    </div>
 </div>
 <canvas id="labyrinth" height="700" width="875"></canvas>
 
-
-
-<script src="a-star.js"></script>
 <script src="pacman.js"></script>

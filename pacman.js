@@ -39,9 +39,9 @@ var sprite_map = [
     ["vb", "p", "p", "p", "p", "p", "dlb", "hb", "drb", "p", "p", "p", "p", "p", "vb", "vb", 1, "vb", "vb", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "vb"],
     ["vb", "p", "ulb", "hb", "hb", "p", "p", "p", "p", "p", "ulb", "hb", "urb", "p", "vb", "vb", 1, "vb", "vb", "p", "img", 0, 0, 0, 0, 0, 0, 0, "p", "ulb", "hb", "hb", "urb", "p", "vb"],
     ["vb", "p", "vb", "p", "p", "p", "vb", "p", "ulb", "hb", "hb", "hb", "drb", "p", "dlb", "drb", 1, "dlb", "drb", "p", 0, 0, 0, 0, 0, 0, 0, 0, "p", "dlb", "hb", "hb", "drb", "p", "vb"],
-    ["vb", "p", "vb", "p", "ulb", "hb", "vb", "p", "vb", 0, "vb", "p", "p", "p", "p", "p", "p", "p", "p", "p", 0, 0, 0, 0, 0, 0, 0, 0, "p", "p", "p", "p", "p", "p", "vb"],
+    ["vb", "p", "vb", "p", "ulb", "hb", "vb", "p", "vb", 0, "vb", "p", "p", "p", "p", "p", "p", "p", "p", "p", 0, 0, 0, 0, 0, 0, 0, 0, "pp", "p", "p", "p", "p", "p", "vb"],
     ["vb", "p", "vb", "p", "dlb", "hb", "drb", "p", "dlb", "hb", "drb", "p", "vb", "p", "ulb", "urb", "p", "ulb", "urb", "p", 0, 0, 0, 0, 0, 0, 0, 0, "p", "ulb", "hb", "hb", "urb", "p", "vb"],
-    ["vb", "p", "vb", "p", "p", "p", "p", "p", "p", "p", "p", "p", "vb", "p", "vb", "vb", "p", "vb", "vb", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "dlb", "hb", "hb", "drb", "p", "vb"],
+    ["vb", "p", "vb", "p", "p", "p", "pp", "p", "p", "p", "p", "p", "vb", "p", "vb", "vb", "p", "vb", "vb", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "dlb", "hb", "hb", "drb", "p", "vb"],
     ["vb", "p", "vb", "ulb", "hb", "urb", "p", "ulb", "urb", "p", "ulb", "hb", "drb", "p", "vb", "vb", "p", "vb", "vb", "p", "ulb", "urb", "p", "ulb", "hb", "hb", "hb", "urb", "p", "p", "p", "p", "p", "p", "vb"],
     ["vb", "p", "dlb", "hb", "hb", "drb", "p", "vb", "vb", "p", "dlb", "hb", "urb", "p", "vb", "vb", "p", "vb", "vb", "p", "vb", "vb", "p", "vb", "ulb", "hb", "hb", "drb", "p", "ulb", "urb", "p", "ulb", "hb", "drb"],
     ["vb", "p", "p", "p", "p", "p", "p", "vb", "vb", "p", "p", "p", "vb", "p", "vb", "vb", "p", "vb", "vb", "p", "vb", "vb", "p", "vb", "vb", "p", "p", "p", "p", "vb", "vb", "p", "vb", 0, 0],
@@ -55,10 +55,10 @@ var sprite_map = [
     ["vb", "p", "p", "p", "p", "p", "p", "p", "p", "vb", "dlb", "hb", "urb", "p", "p", "p", "p", "p", "p", "p", "ulb", "drb", "vb", "p", "p", "p", "p", "vb", "vb", "p", "vb", "vb", "p", "vb", 0],
     ["vb", "p", "ulb", "hb", "hb", "urb", "p", "vb", "p", "dlb", "hb", "hb", "drb", "p", "ulb", "urb", "p", "ulb", "urb", "p", "dlb", "hb", "drb", "p", "ulb", "urb", "p", "vb", "vb", "p", "vb", "vb", "p", "vb", 0],
     ["vb", "p", "dlb", "hb", "hb", "drb", "p", "vb", "p", "p", "p", "p", "p", "p", "vb", "vb", "p", "vb", "vb", "p", "p", "p", "p", "p", "dlb", "drb", "p", "dlb", "drb", "p", "vb", "vb", "p", "vb", 0],
-    ["vb", "p", "p", "p", "p", "p", "p", "p", "p", "ulb", "hb", "hb", "urb", "p", "vb", "vb", "p", "vb", "vb", "p", "ulb", "hb", "urb", "p", "p", "p", "p", "p", "p", "p", "vb", "vb", "p", "vb", 0],
+    ["vb", "p", "p", "p", "p", "p", "p", "p", "p", "ulb", "hb", "hb", "urb", "p", "vb", "vb", "p", "vb", "vb", "p", "ulb", "hb", "urb", "p", "p", "pp", "p", "p", "p", "p", "vb", "vb", "p", "vb", 0],
     ["vb", "p", "ulb", "urb", "p", "ulb", "hb", "urb", "p", "vb", "ulb", "urb", "vb", "p", "vb", "vb", "p", "vb", "vb", "p", "vb", 0, "vb", "p", "ulb", "hb", "hb", "hb", "urb", "p", "vb", "vb", "p", "vb", 0],
     ["vb", "p", "dlb", "drb", "p", "dlb", "hb", "drb", "p", "vb", "vb", "vb", "vb", "p", "vb", "vb", "p", "vb", "vb", "p", "vb", "ulb", "drb", "p", "dlb", "hb", "hb", "hb", "drb", "p", "dlb", "drb", "p", "dlb", "urb"],
-    ["vb", "p", "p", "p", "p", "p", "p", "p", "p", "vb", "vb", "dlb", "drb", "p", "dlb", "drb", "p", "dlb", "drb", "p", "dlb", "hb", "urb", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "vb"],
+    ["vb", "p", "p", "p", "pp", "p", "p", "p", "p", "vb", "vb", "dlb", "drb", "p", "dlb", "drb", "p", "dlb", "drb", "p", "dlb", "hb", "urb", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "vb"],
     ["vb", "p", "ulb", "hb", "hb", "urb", "p", "vb", "p", "vb", "dlb", "urb", "p", "p", "p", "p", "p", "p", "p", "p", "p", "vb", "vb", "p", "ulb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "urb", "p", "vb"],
     ["vb", "p", "dlb", "hb", "hb", "drb", "p", "vb", "p", "dlb", "hb", "drb", "p", "ulb", "hb", "urb", 1, "ulb", "hb", "urb", "p", "dlb", "drb", "p", "dlb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "drb", "p", "vb"],
     ["vb", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "vb", 0, "vb", 1, "vb", 0, "vb", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "vb"],
@@ -95,7 +95,6 @@ function ArrayInArray(array, array2) {
 //Finner alle åpne steder for spøkelser
 function find_open(x, y, prev) {
     var opne = [];
-
     if (labyrinth[y + 1][x])
         if (y + 1 != prev[1] || x != prev[0])
             if (!(y + 1 == 25 && x == 16))
@@ -127,7 +126,7 @@ class ghost {
         this.prev = [x, y];
         this.scatter = true;
         this.corner = corner;
-        this.next = function () {
+        this.next = function (goal) {
             if (this.scatter) {
                 var mulig = find_open(this.x, this.y, this.prev);
                 if (mulig.length == 0)
@@ -147,7 +146,7 @@ class ghost {
                 var mulig = find_open(this.x, this.y, this.prev);
                 var temp = mulig[0];
                 for (var i = 1; i < mulig.length; i++) {
-                    if (heuristic(mulig[i], [pacman.x / sqaure, pacman.y / sqaure]) < heuristic(temp, [pacman.x / sqaure, pacman.y / sqaure])) {
+                    if (heuristic(mulig[i], goal) < heuristic(temp, goal)) {
                         temp = mulig[i];
                     }
                 }
@@ -167,7 +166,8 @@ var vel_x = 0;
 var vel_y = 0;
 var score = 0;
 var lives = 3;
-
+var prev_vel_x = 0;
+var prev_vel_y = 0;
 //Ghosts
 var white = new ghost(16, 14, [3, 4]);
 var green = new ghost(14, 15, [33, 5]);
@@ -177,12 +177,10 @@ var white_sprite = new sprite(sqaure, sqaure, "sprites/white.png", white.x * sqa
 var green_sprite = new sprite(sqaure, sqaure, "sprites/green.png", green.x * sqaure, green.y * sqaure);
 var grey_sprite = new sprite(sqaure, sqaure, "sprites/grey.png", grey.x * sqaure, grey.y * sqaure);
 var evil_sprite = new sprite(sqaure, sqaure, "sprites/evil.png", evil.x * sqaure, evil.y * sqaure);
-/*
- Call astar each frame
- update sprite
-*/
+
 //Bakgrunn sprites
 var pellet = new Image();
+var power_pellet = new Image();
 var vert_beam = new Image();
 var hori_beam = new Image();
 var upper_left_beam = new Image();
@@ -193,6 +191,7 @@ var logo = new Image();
 var cherry = new Image();
 
 pellet.src = "./sprites/pellet.png";
+power_pellet.src = "sprites/power.png"
 vert_beam.src = "./sprites/beam.png";
 hori_beam.src = "./sprites/beam2.png";
 lower_left_beam.src = "./sprites/dlb.png";
@@ -207,6 +206,8 @@ function drawBack() {
         for (var ix = 0; ix < can.width / sqaure; ix++) {
             if (sprite_map[iy][ix] == "p")
                 ctx.drawImage(pellet, ix * sqaure, iy * sqaure, sqaure, sqaure);
+            else if (sprite_map[iy][ix] == "pp")
+                ctx.drawImage(power_pellet, ix * sqaure, iy * sqaure, sqaure, sqaure);
             else if (sprite_map[iy][ix] == "vb")
                 ctx.drawImage(vert_beam, ix * sqaure, iy * sqaure, sqaure, sqaure);
             else if (sprite_map[iy][ix] == "hb")
@@ -225,13 +226,47 @@ function drawBack() {
                 ctx.drawImage(cherry, ix * sqaure, iy * sqaure, sqaure, sqaure);
         }
     }
-    /*
-    for (var iy = 0; iy < can.height / sqaure; iy++) {
-        for (var ix = 0; ix < can.width / sqaure; ix++) {
-            if (labyrinth[iy][ix] == 0)
-                ctx.fillRect(ix * sqaure, iy * sqaure, sqaure, sqaure);
-        }
-    }*/
+}
+
+function GameOver() {
+    if (lives == 0) {
+        location.reload();
+    }
+    if (pacman.x == white_sprite.x && pacman.y == white_sprite.y) {
+        lives--;
+        incrementScore();
+        clearInterval(main);
+        reset();
+    }
+    if (pacman.x == green_sprite.x && pacman.y == green_sprite.y) {
+        lives--;
+        incrementScore();
+        clearInterval(main);
+        reset();
+    }
+    if (pacman.x == grey_sprite.x && pacman.y == grey_sprite.y) {
+        lives--;
+        incrementScore();
+        clearInterval(main);
+        reset();
+    }
+    if (pacman.x == evil_sprite.x && pacman.y == evil_sprite.y) {
+        lives--;
+        incrementScore();
+        clearInterval(main);
+        reset();
+    }
+}
+
+function rotatePac() {
+    if (vel_x == 1)
+        pacman.image.src = "./sprites/pacman.png";
+    if (vel_x == -1)
+        pacman.image.src = "./sprites/pacman2.png";
+    if (vel_y == 1)
+        pacman.image.src = "./sprites/pacman3.png";
+    if (vel_y == -1)
+        pacman.image.src = "./sprites/pacman1.png";
 }
 
 function check_movement(object) {
@@ -251,36 +286,34 @@ function check_movement(object) {
     }
     if (labyrinth[y][x] == 0)
         return false;
-
     return true;
 }
 //Oppdatering av Score
-function incrementScore(eat) {
-    if (eat == "p") {
+function incrementScore() {
+    if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "p") {
+        sprite_map[pacman.y / sqaure][pacman.x / sqaure] = 1
         score += 100;
-    } else if (eat == "g") {
+    } else if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "g") {
+        sprite_map[pacman.y / sqaure][pacman.x / sqaure] = 1
         score += 1000;
-    } else if (eat == "f") {
+    } else if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "f") {
+        lives++;
         score += 500;
-    } else {
-        score++;
+        sprite_map[pacman.y / sqaure][pacman.x / sqaure] = 1
+    }
+    document.getElementById("lives").innerHTML = "";
+    for (var i = 0; i < lives; i++) {
+        document.getElementById("lives").innerHTML += "<img src='sprites/pacman.png'>";
     }
     document.getElementById("score").innerHTML = score;
 }
 
 
-function Rotate(angle) {
-    ctx.translate(pacman.x, pacman.y);
-    ctx.rotate(angle);
-    ctx.translate(-pacman.x, -pacman.y);
-    ctx.drawImage(pacman, pacman.x, pacman.y, sqaure, sqaure);
-}
-
 //Start funksjon
 function start() {
     //TODO: Make a functioning start and pause screen
     drawBack();
-    setInterval(main, 1000 / 8);
+    setInterval(main, 1000 / 6);
 }
 start();
 //Main function
@@ -294,20 +327,16 @@ function main() {
     if (!check_movement(pacman)) {
         pacman.x -= vel_x * sqaure;
         pacman.y -= vel_y * sqaure;
+        vel_x = prev_vel_x;
+        vel_y = prev_vel_y;
     };
+    rotatePac();
     pacman.update();
-    //TODO fiks score oppdatering
-    /*
-    if(pacman.x==pellet.x&&pacman.y==pellet.y)
-        increment.score
-        remove pellet from pellet array 
-        clearrect(pellet.x,pellet.y)
-    */
+    incrementScore();
     //Finn neste posisjon for spøkelsene
     white.next([Math.floor(pacman.x / sqaure) + 4 * vel_x, Math.floor(pacman.y / sqaure) + 8 * vel_y]);
     green.next([Math.floor(Math.random() * can.width / sqaure), Math.floor(Math.random() * can.height / sqaure)]);
     grey.next([Math.floor(pacman.x / sqaure) - 8 * vel_x, Math.floor(pacman.y / sqaure) - 4 * vel_y]);
-    evil.next([Math.floor(pacman.x / sqaure), Math.floor(pacman.y / sqaure)]);
     evil.next([Math.floor(pacman.x / sqaure), Math.floor(pacman.y / sqaure)]);
     //Hvisk vekk de gamle spritesene
     ctx.clearRect(white_sprite.x, white_sprite.y, sqaure, sqaure);
@@ -331,8 +360,9 @@ function main() {
     green_sprite.update();
     grey_sprite.update();
     evil_sprite.update();
+    GameOver();
     //Start chasing
-    if (score > 500) {
+    if (score > 1000) {
         white.scatter = false;
         green.scatter = false;
         grey.scatter = false;
@@ -342,51 +372,88 @@ function main() {
 
 //Will reset the game to starting conditions, without having to refresh
 function reset() {
-
+    ctx.clearRect(pacman.x, pacman.y, sqaure, sqaure);
+    ctx.fillRect(pacman.x, pacman.y, sqaure, sqaure);
+    ctx.clearRect(white_sprite.x, white_sprite.y, sqaure, sqaure);
+    ctx.clearRect(grey_sprite.x, grey_sprite.y, sqaure, sqaure);
+    ctx.clearRect(green_sprite.x, green_sprite.y, sqaure, sqaure);
+    ctx.clearRect(evil_sprite.x, evil_sprite.y, sqaure, sqaure);
+    ctx.fillRect(white_sprite.x, white_sprite.y, sqaure, sqaure);
+    ctx.fillRect(grey_sprite.x, grey_sprite.y, sqaure, sqaure);
+    ctx.fillRect(green_sprite.x, green_sprite.y, sqaure, sqaure);
+    ctx.fillRect(evil_sprite.x, evil_sprite.y, sqaure, sqaure);
+    pacman.x = 25;
+    pacman.y = 25;
+    white.x = 16;
+    white.y = 14;
+    green.x = 14;
+    green.y = 15;
+    grey.x = 15;
+    grey.y = 14;
+    evil.x = 17;
+    evil.y = 17;
+    vel_x = 0;
+    vel_y = 0;
+    white_sprite.x = white.x * sqaure;
+    white_sprite.y = white.y * sqaure;
+    green_sprite.x = green.x * sqaure;
+    green_sprite.y = green.y * sqaure;
+    grey_sprite.x = grey.x * sqaure;
+    grey_sprite.y = grey.y * sqaure;
+    evil_sprite.x = evil.x * sqaure;
+    evil_sprite.y = evil.y * sqaure;
 }
 
 //Keyboard 
 function keyPress(evt) {
     switch (evt.keyCode) {
         case 37:
+            prev_vel_x = vel_x;
+            prev_vel_y = vel_y;
             vel_y = 0;
             vel_x = -1;
-            pacman.image.src = "./sprites/pacman2.png";
             break;
         case 38:
+            prev_vel_x = vel_x;
+            prev_vel_y = vel_y;
             vel_y = -1;
             vel_x = 0;
-            pacman.image.src = "./sprites/pacman1.png";
             break;
         case 39:
+            prev_vel_x = vel_x;
+            prev_vel_y = vel_y;
             vel_x = 1;
             vel_y = 0;
-            pacman.image.src = "./sprites/pacman.png";
             break;
         case 40:
+            prev_vel_x = vel_x;
+            prev_vel_y = vel_y;
             vel_y = 1;
             vel_x = 0;
-            pacman.image.src = "./sprites/pacman3.png";
             break;
         case 87:
+            prev_vel_x = vel_x;
+            prev_vel_y = vel_y;
             vel_y = -1;
             vel_x = 0;
-            pacman.image.src = "./sprites/pacman1.png";
             break;
         case 65:
+            prev_vel_x = vel_x;
+            prev_vel_y = vel_y;
             vel_x = -1;
             vel_y = 0;
-            pacman.image.src = "./sprites/pacman2.png";
             break;
         case 83:
+            prev_vel_x = vel_x;
+            prev_vel_y = vel_y;
             vel_y = 1;
             vel_x = 0;
-            pacman.image.src = "./sprites/pacman3.png";
             break;
         case 68:
+            prev_vel_x = vel_x;
+            prev_vel_y = vel_y;
             vel_x = 1;
             vel_y = 0;
-            pacman.image.src = "./sprites/pacman.png";
             break;
     }
 }
