@@ -2,8 +2,11 @@
 <script>
     var can = document.getElementById("can")
     can.height = 400;
-    can.width = 400;
+    can.width = 800;
     var ctx = can.getContext("2d");
+
+
+
     class sprite {
         constructor(width, height, source, x, y) {
             this.image = new Image();
@@ -26,10 +29,49 @@
             };
         }
     }
+    class sprite2 {
+        constructor(width, height, source, x, y) {
+            this.image = new Image();
+            this.image.src = source;
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y;
+            this.update = function () {
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            };
+        }
+    }
     var test = new sprite(50, 50, "sprites/test.png", 0, 0);
-    setInterval(main, 50);
+    class ghost {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.vel = [0, 0];
+            this.next = function () {
+                if (test.x < this.x)
+                    this.vel = [-1, 0];
+                else
+                    this.vel = [1, 0];
+            }
+
+        }
+    }
+    var g_sprite = new sprite2(50, 50, "sprites/grey.png", 50, 0);
+    var g = new ghost(50, 0)
+    setInterval(main, 1000 / 20);
 
     function main() {
+        ctx.clearRect(test.x, test.y, test.width, test.height);
+        ctx.clearRect(g_sprite.x, g_sprite.y, g_sprite.width, g_sprite.height);
+        test.x += 5;
+        g.x += g.vel[0] * 5;
+        if (test.x % 25 == 0) {
+            g.next()
+        }
+        g_sprite.x = g.x;
+        g_sprite.update();
+        console.log(g_sprite.x)
         test.update();
     }
 </script>

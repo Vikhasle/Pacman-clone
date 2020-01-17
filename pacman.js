@@ -65,6 +65,25 @@ var sprite_map = [
     ["dlb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "drb", 0, "vb", 1, "vb", 0, "dlb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "drb"]
 ]
 
+class pac {
+    constructor(width, height, source, x, y) {
+        this.image = new Image();
+        this.image.src = source;
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
+        this.count = 0;
+        this.update = function () {
+            //void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+            ctx.drawImage(this.image, this.count * 50, 0, 50, 50, this.x, this.y, sqaure, sqaure);
+            if (this.count == 2)
+                this.count = 0;
+            else
+                this.count++;
+        };
+    }
+}
 //Klasse for tegne sprites
 class sprite {
     constructor(width, height, source, x, y) {
@@ -124,35 +143,44 @@ class ghost {
         this.x = x;
         this.y = y;
         this.prev = [x, y];
+        this.scared = false;
         this.scatter = true;
         this.corner = corner;
         this.next = function (goal) {
             if (this.scatter) {
-                var mulig = find_open(this.x, this.y, this.prev);
-                if (mulig.length == 0)
-                    temp = this.prev;
-                else {
+                if (this.scared) {
+
+                } else {
+                    var mulig = find_open(this.x, this.y, this.prev);
+                    if (mulig.length == 0)
+                        temp = this.prev;
+                    else {
+                        var temp = mulig[0];
+                        for (var i = 1; i < mulig.length; i++) {
+                            if (heuristic(mulig[i], this.corner) < heuristic(temp, this.corner)) {
+                                temp = mulig[i];
+                            }
+                        }
+                    }
+                    this.prev = [this.x, this.y];
+                    this.x = temp[0];
+                    this.y = temp[1];
+                }
+            } else {
+                if (this.scared) {
+
+                } else {
+                    var mulig = find_open(this.x, this.y, this.prev);
                     var temp = mulig[0];
                     for (var i = 1; i < mulig.length; i++) {
-                        if (heuristic(mulig[i], this.corner) < heuristic(temp, this.corner)) {
+                        if (heuristic(mulig[i], goal) < heuristic(temp, goal)) {
                             temp = mulig[i];
                         }
                     }
+                    this.prev = [this.x, this.y];
+                    this.x = temp[0];
+                    this.y = temp[1];
                 }
-                this.prev = [this.x, this.y];
-                this.x = temp[0];
-                this.y = temp[1];
-            } else {
-                var mulig = find_open(this.x, this.y, this.prev);
-                var temp = mulig[0];
-                for (var i = 1; i < mulig.length; i++) {
-                    if (heuristic(mulig[i], goal) < heuristic(temp, goal)) {
-                        temp = mulig[i];
-                    }
-                }
-                this.prev = [this.x, this.y];
-                this.x = temp[0];
-                this.y = temp[1];
             }
         }
     }
@@ -160,7 +188,7 @@ class ghost {
 
 
 //Sprites
-var pacman = new sprite(sqaure, sqaure, "./sprites/pacman.png", 25, 25);
+var pacman = new pac(sqaure, sqaure, "./sprites/test.png", 25, 25);
 //Nødvendige variabler
 var vel_x = 0;
 var vel_y = 0;
@@ -228,6 +256,22 @@ function drawBack() {
     }
 }
 
+function removePower() {
+    pacman.image.src = "sprites/pacman.png";
+    white.scared = false;
+    grey.scared = false;
+    green.scared = false;
+    evil.scared = false;
+}
+
+function Power() {
+    pacman.image.src = "sprites/power_pacman.png";
+    white.scared = true;
+    grey.scared = true;
+    green.scared = true;
+    evil.scared = true;
+}
+
 function GameOver() {
     if (lives == 0) {
         location.reload();
@@ -257,7 +301,7 @@ function GameOver() {
         reset();
     }
 }
-
+/*
 function rotatePac() {
     if (vel_x == 1)
         pacman.image.src = "./sprites/pacman.png";
@@ -268,7 +312,7 @@ function rotatePac() {
     if (vel_y == -1)
         pacman.image.src = "./sprites/pacman1.png";
 }
-
+*/
 function check_movement(object) {
     var x = Math.floor(object.x / sqaure);
     var y = Math.floor(object.y / sqaure);
@@ -292,13 +336,16 @@ function check_movement(object) {
 function incrementScore() {
     if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "p") {
         sprite_map[pacman.y / sqaure][pacman.x / sqaure] = 1
-        score += 100;
+        score += 10;
     } else if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "g") {
         sprite_map[pacman.y / sqaure][pacman.x / sqaure] = 1
-        score += 1000;
+        score += 200;
     } else if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "f") {
         lives++;
         score += 500;
+        sprite_map[pacman.y / sqaure][pacman.x / sqaure] = 1
+    } else if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "pp") {
+        Power();
         sprite_map[pacman.y / sqaure][pacman.x / sqaure] = 1
     }
     document.getElementById("lives").innerHTML = "";
@@ -313,7 +360,7 @@ function incrementScore() {
 function start() {
     //TODO: Make a functioning start and pause screen
     drawBack();
-    setInterval(main, 1000 / 6);
+    setInterval(main, 1000 / 8);
 }
 start();
 //Main function
@@ -330,7 +377,7 @@ function main() {
         vel_x = prev_vel_x;
         vel_y = prev_vel_y;
     };
-    rotatePac();
+    //rotatePac();
     pacman.update();
     incrementScore();
     //Finn neste posisjon for spøkelsene
@@ -362,7 +409,7 @@ function main() {
     evil_sprite.update();
     GameOver();
     //Start chasing
-    if (score > 1000) {
+    if (score > 500) {
         white.scatter = false;
         green.scatter = false;
         grey.scatter = false;
