@@ -33,6 +33,7 @@ var labyrinth = [
     [0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
     [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    
 ]
 var sprite_map = [
     ["ulb", "hb", "hb", "hb", "hb", "hb", "urb", "0", "ulb", "hb", "hb", "hb", "hb", "hb", "urb", "vb", 1, "vb", "ulb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "urb"],
@@ -65,26 +66,39 @@ var sprite_map = [
     ["dlb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "drb", 0, "vb", 1, "vb", 0, "dlb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "drb"]
 ]
 
+//Audio shit
+
+var eating_sound= new Audio("sounds/eat.mp3");
+eating_sound.playbackRate=2;
+var start_sound = new Audio("sounds/start.mp3");
+var death_sound = new Audio("sounds/death.mp3");
+
+//Pacman klassen
 class pac {
     constructor(width, height, source, x, y) {
+        //Sprite info 
         this.image = new Image();
         this.image.src = source;
+        //Størrelsen til pacman
         this.width = width;
         this.height = height;
+        //kordinater
         this.x = x;
         this.y = y;
+        //Animasjon counter for animasjonen til pacman
         this.count = 0;
-        this.update = function () {
-            //void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
-            ctx.drawImage(this.image, this.count * 50, 0, 50, 50, this.x, this.y, sqaure, sqaure);
-            if (this.count == 2)
-                this.count = 0;
-            else
-                this.count++;
-        };
     }
+    //Metode for å tegne pacman
+    update() {
+        ctx.drawImage(this.image, this.count * 50, 0, 50, 50, this.x, this.y, sqaure, sqaure);
+        //oppdatering av hvilke sprites som skal vises
+        if (this.count == 2)
+            this.count = 0;
+        else
+            this.count++;
+    };
 }
-//Klasse for tegne sprites
+//Klasse for tegne generiske sprites
 class sprite {
     constructor(width, height, source, x, y) {
         this.image = new Image();
@@ -93,17 +107,20 @@ class sprite {
         this.height = height;
         this.x = x;
         this.y = y;
-        this.update = function () {
-            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-        };
     }
+    //Metode for å tegne
+    update () {
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    };
 }
 
-/*finner minste avstand*/
+//Manhattan heuristic for distanse mellom to punkt
 function heuristic(start, goal) {
     return Math.abs(start[0] - goal[0]) + Math.abs(start[1] - goal[1])
 }
 
+//Hjelpe funksjon for å se som et array inn i et array er likt et array
+//JS støtter ikke sammen ligning av to arrays
 function ArrayInArray(array, array2) {
     for (var i = 0; i < array.length; i++) {
         if (array[i][0] == array2[0] && array[i][1] == array2[1]) {
@@ -111,6 +128,7 @@ function ArrayInArray(array, array2) {
         }
     }
 }
+
 //Finner alle åpne steder for spøkelser
 function find_open(x, y, prev) {
     var opne = [];
@@ -137,50 +155,97 @@ function find_open(x, y, prev) {
     return opne;
 }
 
-//Ghost AI
+//Ghost AI klassen
 class ghost {
     constructor(x, y, corner) {
+        //kordinater
         this.x = x;
         this.y = y;
+        //De forrige kordinatene til spøkelset
         this.prev = [x, y];
+        //Oppførelse bools
         this.scared = false;
         this.scatter = true;
+        //Hvilket hjørnet spøkelse går til
         this.corner = corner;
-        this.next = function (goal) {
-            if (this.scatter) {
-                if (this.scared) {
-
-                } else {
-                    var mulig = find_open(this.x, this.y, this.prev);
-                    if (mulig.length == 0)
-                        temp = this.prev;
-                    else {
-                        var temp = mulig[0];
-                        for (var i = 1; i < mulig.length; i++) {
-                            if (heuristic(mulig[i], this.corner) < heuristic(temp, this.corner)) {
-                                temp = mulig[i];
-                            }
+    }
+    //Metoden bestemmer hvor spøkelset skal gå
+    //goal er målet til spøkelset i kordinat form
+    next(goal) {
+        //Hvis scatter boolen er satt vil spøkelse finne korteste veien til hjørnet sitt
+        if (this.scatter) {
+            //vis spøkelset er redd pacman
+            if (this.scared) {
+                var mulig = find_open(this.x, this.y, this.prev);
+                if (mulig.length == 0)
+                    var temp = this.prev;
+                else {
+                    //Koden under finner det kordinatet med mest heuristic verdi til målet
+                    var temp = mulig[0];
+                    for (var i = 1; i < mulig.length; i++) {
+                        if (heuristic(mulig[i], this.corner) > heuristic(temp, goal)) {
+                            temp = mulig[i];
                         }
                     }
-                    this.prev = [this.x, this.y];
-                    this.x = temp[0];
-                    this.y = temp[1];
                 }
+                this.prev = [this.x, this.y];
+                this.x = temp[0];
+                this.y = temp[1];
             } else {
-                if (this.scared) {
-
-                } else {
-                    var mulig = find_open(this.x, this.y, this.prev);
+                //Alle mulige steder spøkelset kan gå 
+                var mulig = find_open(this.x, this.y, this.prev);
+                if (mulig.length == 0)
+                    var temp = this.prev;
+                else {
+                    //Koden under finner det kordinatet med mest heuristic verdi til målet
+                    var temp = mulig[0];
+                    for (var i = 1; i < mulig.length; i++) {
+                        if (heuristic(mulig[i], this.corner) < heuristic(temp, this.corner)) {
+                            temp = mulig[i];
+                        }
+                    }
+                }
+                this.prev = [this.x, this.y];
+                this.x = temp[0];
+                this.y = temp[1];
+            }
+        } else {
+            //vis spøkelset er redd pacman
+            if (this.scared) {
+                var mulig = find_open(this.x, this.y, this.prev);
+                if (mulig.length == 0)
+                    var temp = this.prev;
+                else {
+                    //Koden under finner det kordinatet med minst heuristic verdi til målet
+                    var temp = mulig[0];
+                    for (var i = 1; i < mulig.length; i++) {
+                        if (heuristic(mulig[i], this.corner) > heuristic(temp, goal)) {
+                            temp = mulig[i];
+                        }
+                    }
+                }
+                this.prev = [this.x, this.y];
+                this.x = temp[0];
+                this.y = temp[1];
+            } else {
+                //Alle mulige steder spøkelset kan gå 
+                var mulig = find_open(this.x, this.y, this.prev);
+                //Vis det ikke er noen steder å gå for spøkelset
+                if (mulig.length == 0)
+                    var temp = this.prev;
+                else{
+                    //Koden under finner det kordinatet med minst heuristic verdi til målet
                     var temp = mulig[0];
                     for (var i = 1; i < mulig.length; i++) {
                         if (heuristic(mulig[i], goal) < heuristic(temp, goal)) {
                             temp = mulig[i];
                         }
                     }
-                    this.prev = [this.x, this.y];
-                    this.x = temp[0];
-                    this.y = temp[1];
                 }
+                //sett kordinatetene til spøkelse
+                this.prev = [this.x, this.y];
+                this.x = temp[0];
+                this.y = temp[1];
             }
         }
     }
@@ -257,19 +322,18 @@ function drawBack() {
 }
 
 function removePower() {
-    pacman.image.src = "sprites/pacman.png";
     white.scared = false;
     grey.scared = false;
     green.scared = false;
     evil.scared = false;
 }
 
-function Power() {
-    pacman.image.src = "sprites/power_pacman.png";
+function Power() { //TODO Add diff sprites to the ghosts when scared
     white.scared = true;
     grey.scared = true;
     green.scared = true;
     evil.scared = true;
+    setTimeout(removePower,10000);
 }
 
 function GameOver() {
@@ -277,28 +341,54 @@ function GameOver() {
         location.reload();
     }
     if (pacman.x == white_sprite.x && pacman.y == white_sprite.y) {
-        lives--;
-        incrementScore();
-        clearInterval(main);
-        reset();
+        if (white.scared){
+            white.x=1500000;
+            score+=500
+        }else{
+            death_sound.play();
+            lives--;
+            incrementScore();
+            clearInterval(main);
+            reset();
+        }
+        
     }
     if (pacman.x == green_sprite.x && pacman.y == green_sprite.y) {
-        lives--;
-        incrementScore();
-        clearInterval(main);
-        reset();
+        if (green.scared){
+            green.x=1500000;
+            score+=500
+        }else{
+            death_sound.play();
+            lives--;
+            incrementScore();
+            clearInterval(main);
+            reset();
+        }
+        
     }
     if (pacman.x == grey_sprite.x && pacman.y == grey_sprite.y) {
-        lives--;
-        incrementScore();
-        clearInterval(main);
-        reset();
+        if (grey.scared){
+            grey.x=1500000;
+            grey+=500
+        }else{
+            death_sound.play();
+            lives--;
+            incrementScore();
+            clearInterval(main);
+            reset();
+        }
     }
     if (pacman.x == evil_sprite.x && pacman.y == evil_sprite.y) {
-        lives--;
-        incrementScore();
-        clearInterval(main);
-        reset();
+        if (evil.scared){
+            evil.x=1500000;
+            score+=500
+        }else{
+            death_sound.play();
+            lives--;
+            incrementScore();
+            clearInterval(main);
+            reset();
+        }
     }
 }
 
@@ -326,16 +416,16 @@ function check_movement(object) {
 //Oppdatering av Score
 function incrementScore() {
     if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "p") {
+        eating_sound.play();
         sprite_map[pacman.y / sqaure][pacman.x / sqaure] = 1
         score += 10;
-    } else if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "g") {
-        sprite_map[pacman.y / sqaure][pacman.x / sqaure] = 1
-        score += 200;
-    } else if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "f") {
+    }else if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "f") {
+        eating_sound.play();
         lives++;
         score += 500;
         sprite_map[pacman.y / sqaure][pacman.x / sqaure] = 1
     } else if (sprite_map[pacman.y / sqaure][pacman.x / sqaure] == "pp") {
+        eating_sound.play();
         Power();
         sprite_map[pacman.y / sqaure][pacman.x / sqaure] = 1
     }
@@ -351,55 +441,52 @@ function incrementScore() {
 function start() {
     //TODO: Make a functioning start and pause screen
     drawBack();
-    setInterval(main, 1000 / 20);
+    setInterval(main, 1000 / 10);
+    start_sound.play()
 }
 start();
 //Main function
 
-var frame_count=0;
 function main() {
     drawBack();
     ctx.clearRect(pacman.x, pacman.y, sqaure, sqaure);
     ctx.fillRect(pacman.x, pacman.y, sqaure, sqaure);
-    pacman.x += vel_x * sqaure/2;
-    pacman.y += vel_y * sqaure/2;
+    pacman.x += vel_x * sqaure;
+    pacman.y += vel_y * sqaure;
     //Hvis vi krasjer inn i en vegg
     if (!check_movement(pacman)) {
-        pacman.x -= vel_x * sqaure/2;
-        pacman.y -= vel_y * sqaure/2;
-        vel_x = prev_vel_x;
-        vel_y = prev_vel_y;
+        pacman.x -= vel_x * sqaure;
+        pacman.y -= vel_y * sqaure;
     };
+    
+    //Finn neste posisjon for spøkelsene
+    white.next([Math.floor(pacman.x / sqaure) + 4 * vel_x, Math.floor(pacman.y / sqaure) + 8 * vel_y]);
+    green.next([Math.floor(Math.random() * can.width / sqaure), Math.floor(Math.random() * can.height / sqaure)]);
+    grey.next([Math.floor(pacman.x / sqaure) - 8 * vel_x, Math.floor(pacman.y / sqaure) - 4 * vel_y]);
+    evil.next([Math.floor(pacman.x / sqaure), Math.floor(pacman.y / sqaure)]);
+    //Hvisk vekk de gamle spritesene
+    ctx.clearRect(white_sprite.x, white_sprite.y, sqaure, sqaure);
+    ctx.clearRect(grey_sprite.x, grey_sprite.y, sqaure, sqaure);
+    ctx.clearRect(green_sprite.x, green_sprite.y, sqaure, sqaure);
+    ctx.clearRect(evil_sprite.x, evil_sprite.y, sqaure, sqaure);
+    ctx.fillRect(white_sprite.x, white_sprite.y, sqaure, sqaure);
+    ctx.fillRect(grey_sprite.x, grey_sprite.y, sqaure, sqaure);
+    ctx.fillRect(green_sprite.x, green_sprite.y, sqaure, sqaure);
+    ctx.fillRect(evil_sprite.x, evil_sprite.y, sqaure, sqaure);
+    //Oppdater sprites
+    white_sprite.x = white.x * sqaure;
+    white_sprite.y = white.y * sqaure;
+    green_sprite.x = green.x * sqaure;
+    green_sprite.y = green.y * sqaure;
+    grey_sprite.x = grey.x * sqaure;
+    grey_sprite.y = grey.y * sqaure;
+    evil_sprite.x = evil.x * sqaure;
+    evil_sprite.y = evil.y * sqaure;
     pacman.update()
-    if (frame_count%2==0){
-        //Finn neste posisjon for spøkelsene
-        white.next([Math.floor(pacman.x / sqaure) + 4 * vel_x, Math.floor(pacman.y / sqaure) + 8 * vel_y]);
-        green.next([Math.floor(Math.random() * can.width / sqaure), Math.floor(Math.random() * can.height / sqaure)]);
-        grey.next([Math.floor(pacman.x / sqaure) - 8 * vel_x, Math.floor(pacman.y / sqaure) - 4 * vel_y]);
-        evil.next([Math.floor(pacman.x / sqaure), Math.floor(pacman.y / sqaure)]);
-        //Hvisk vekk de gamle spritesene
-        ctx.clearRect(white_sprite.x, white_sprite.y, sqaure, sqaure);
-        ctx.clearRect(grey_sprite.x, grey_sprite.y, sqaure, sqaure);
-        ctx.clearRect(green_sprite.x, green_sprite.y, sqaure, sqaure);
-        ctx.clearRect(evil_sprite.x, evil_sprite.y, sqaure, sqaure);
-        ctx.fillRect(white_sprite.x, white_sprite.y, sqaure, sqaure);
-        ctx.fillRect(grey_sprite.x, grey_sprite.y, sqaure, sqaure);
-        ctx.fillRect(green_sprite.x, green_sprite.y, sqaure, sqaure);
-        ctx.fillRect(evil_sprite.x, evil_sprite.y, sqaure, sqaure);
-        //Oppdater sprites
-        white_sprite.x = white.x * sqaure;
-        white_sprite.y = white.y * sqaure;
-        green_sprite.x = green.x * sqaure;
-        green_sprite.y = green.y * sqaure;
-        grey_sprite.x = grey.x * sqaure;
-        grey_sprite.y = grey.y * sqaure;
-        evil_sprite.x = evil.x * sqaure;
-        evil_sprite.y = evil.y * sqaure;
-        white_sprite.update();
-        green_sprite.update();
-        grey_sprite.update();
-        evil_sprite.update();
-    }
+    white_sprite.update();
+    green_sprite.update();
+    grey_sprite.update();
+    evil_sprite.update();
     incrementScore();
     GameOver();
     //Start chasing
@@ -409,7 +496,6 @@ function main() {
         grey.scatter = false;
         evil.scatter = false
     }
-    framecount++;
 }
 
 //Will reset the game to starting conditions, without having to refresh
