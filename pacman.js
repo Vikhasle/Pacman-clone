@@ -301,21 +301,12 @@ function GameOver() {
         reset();
     }
 }
-/*
-function rotatePac() {
-    if (vel_x == 1)
-        pacman.image.src = "./sprites/pacman.png";
-    if (vel_x == -1)
-        pacman.image.src = "./sprites/pacman2.png";
-    if (vel_y == 1)
-        pacman.image.src = "./sprites/pacman3.png";
-    if (vel_y == -1)
-        pacman.image.src = "./sprites/pacman1.png";
-}
-*/
+
 function check_movement(object) {
-    var x = Math.floor(object.x / sqaure);
-    var y = Math.floor(object.y / sqaure);
+    if(vel_x>0) var x = Math.round(object.x / sqaure);
+    else var x = Math.floor(object.x / sqaure);
+    if (vel_y>0) var y = Math.round(object.y / sqaure);
+    else var y = Math.floor(object.y / sqaure);
     if (y == 14 && x == 0) {
         object.x = 35 * sqaure;
     }
@@ -360,53 +351,56 @@ function incrementScore() {
 function start() {
     //TODO: Make a functioning start and pause screen
     drawBack();
-    setInterval(main, 1000 / 8);
+    setInterval(main, 1000 / 20);
 }
 start();
 //Main function
+
+var frame_count=0;
 function main() {
     drawBack();
     ctx.clearRect(pacman.x, pacman.y, sqaure, sqaure);
     ctx.fillRect(pacman.x, pacman.y, sqaure, sqaure);
-    pacman.x += vel_x * sqaure;
-    pacman.y += vel_y * sqaure;
+    pacman.x += vel_x * sqaure/2;
+    pacman.y += vel_y * sqaure/2;
     //Hvis vi krasjer inn i en vegg
     if (!check_movement(pacman)) {
-        pacman.x -= vel_x * sqaure;
-        pacman.y -= vel_y * sqaure;
+        pacman.x -= vel_x * sqaure/2;
+        pacman.y -= vel_y * sqaure/2;
         vel_x = prev_vel_x;
         vel_y = prev_vel_y;
     };
-    //rotatePac();
-    pacman.update();
+    pacman.update()
+    if (frame_count%2==0){
+        //Finn neste posisjon for spøkelsene
+        white.next([Math.floor(pacman.x / sqaure) + 4 * vel_x, Math.floor(pacman.y / sqaure) + 8 * vel_y]);
+        green.next([Math.floor(Math.random() * can.width / sqaure), Math.floor(Math.random() * can.height / sqaure)]);
+        grey.next([Math.floor(pacman.x / sqaure) - 8 * vel_x, Math.floor(pacman.y / sqaure) - 4 * vel_y]);
+        evil.next([Math.floor(pacman.x / sqaure), Math.floor(pacman.y / sqaure)]);
+        //Hvisk vekk de gamle spritesene
+        ctx.clearRect(white_sprite.x, white_sprite.y, sqaure, sqaure);
+        ctx.clearRect(grey_sprite.x, grey_sprite.y, sqaure, sqaure);
+        ctx.clearRect(green_sprite.x, green_sprite.y, sqaure, sqaure);
+        ctx.clearRect(evil_sprite.x, evil_sprite.y, sqaure, sqaure);
+        ctx.fillRect(white_sprite.x, white_sprite.y, sqaure, sqaure);
+        ctx.fillRect(grey_sprite.x, grey_sprite.y, sqaure, sqaure);
+        ctx.fillRect(green_sprite.x, green_sprite.y, sqaure, sqaure);
+        ctx.fillRect(evil_sprite.x, evil_sprite.y, sqaure, sqaure);
+        //Oppdater sprites
+        white_sprite.x = white.x * sqaure;
+        white_sprite.y = white.y * sqaure;
+        green_sprite.x = green.x * sqaure;
+        green_sprite.y = green.y * sqaure;
+        grey_sprite.x = grey.x * sqaure;
+        grey_sprite.y = grey.y * sqaure;
+        evil_sprite.x = evil.x * sqaure;
+        evil_sprite.y = evil.y * sqaure;
+        white_sprite.update();
+        green_sprite.update();
+        grey_sprite.update();
+        evil_sprite.update();
+    }
     incrementScore();
-    //Finn neste posisjon for spøkelsene
-    white.next([Math.floor(pacman.x / sqaure) + 4 * vel_x, Math.floor(pacman.y / sqaure) + 8 * vel_y]);
-    green.next([Math.floor(Math.random() * can.width / sqaure), Math.floor(Math.random() * can.height / sqaure)]);
-    grey.next([Math.floor(pacman.x / sqaure) - 8 * vel_x, Math.floor(pacman.y / sqaure) - 4 * vel_y]);
-    evil.next([Math.floor(pacman.x / sqaure), Math.floor(pacman.y / sqaure)]);
-    //Hvisk vekk de gamle spritesene
-    ctx.clearRect(white_sprite.x, white_sprite.y, sqaure, sqaure);
-    ctx.clearRect(grey_sprite.x, grey_sprite.y, sqaure, sqaure);
-    ctx.clearRect(green_sprite.x, green_sprite.y, sqaure, sqaure);
-    ctx.clearRect(evil_sprite.x, evil_sprite.y, sqaure, sqaure);
-    ctx.fillRect(white_sprite.x, white_sprite.y, sqaure, sqaure);
-    ctx.fillRect(grey_sprite.x, grey_sprite.y, sqaure, sqaure);
-    ctx.fillRect(green_sprite.x, green_sprite.y, sqaure, sqaure);
-    ctx.fillRect(evil_sprite.x, evil_sprite.y, sqaure, sqaure);
-    //Oppdater sprites
-    white_sprite.x = white.x * sqaure;
-    white_sprite.y = white.y * sqaure;
-    green_sprite.x = green.x * sqaure;
-    green_sprite.y = green.y * sqaure;
-    grey_sprite.x = grey.x * sqaure;
-    grey_sprite.y = grey.y * sqaure;
-    evil_sprite.x = evil.x * sqaure;
-    evil_sprite.y = evil.y * sqaure;
-    white_sprite.update();
-    green_sprite.update();
-    grey_sprite.update();
-    evil_sprite.update();
     GameOver();
     //Start chasing
     if (score > 500) {
@@ -415,6 +409,7 @@ function main() {
         grey.scatter = false;
         evil.scatter = false
     }
+    framecount++;
 }
 
 //Will reset the game to starting conditions, without having to refresh
