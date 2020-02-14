@@ -1,9 +1,15 @@
+//TODO: Bevegelsene til pack man er litt rustne, og det er vanskelig å ikke krasje i vegger
+//TODO: Noen ganger fungerer ikke kollisjonen mellom spøkelsene og pacman
+//TODO: Forskjellige sprites for de forskjellige fasene til spøkelsene 
 document.addEventListener("keydown", keyPress);
 var can = document.getElementById("labyrinth");
 var ctx = can.getContext("2d");
+//En tile i pacman er 25x25 pixler
 var sqaure = 25;
+//Svart bakgrunn
 ctx.fillStyle = "black"
 ctx.fillRect(0, 0, can.width, can.height);
+//Et kart over hvor vegger er
 var labyrinth = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -35,6 +41,7 @@ var labyrinth = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
 ]
+//Et kart over hvor alle bakgrunnsspritene skal være 
 var sprite_map = [
     ["ulb", "hb", "hb", "hb", "hb", "hb", "urb", "0", "ulb", "hb", "hb", "hb", "hb", "hb", "urb", "vb", 1, "vb", "ulb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "urb"],
     ["vb", "p", "p", "p", "p", "p", "dlb", "hb", "drb", "p", "p", "p", "p", "p", "vb", "vb", 1, "vb", "vb", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "vb"],
@@ -119,34 +126,26 @@ function heuristic(start, goal) {
     return Math.abs(start[0] - goal[0]) + Math.abs(start[1] - goal[1])
 }
 
-//Hjelpe funksjon for å se som et array inn i et array er likt et array
-//JS støtter ikke sammen ligning av to arrays
-function ArrayInArray(array, array2) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i][0] == array2[0] && array[i][1] == array2[1]) {
-            return true;
-        }
-    }
-}
 
 //Finner alle åpne steder for spøkelser
 function find_open(x, y, prev) {
     var opne = [];
+    //Ovenfor
     if (labyrinth[y + 1][x])
         if (y + 1 != prev[1] || x != prev[0])
             if (!(y + 1 == 25 && x == 16))
                 opne.push([x, y + 1]);
-
+    //Nedenfor
     if (labyrinth[y - 1][x])
         if (y - 1 != prev[1] || x != prev[0])
             if (!(y - 1 == 3 && x == 16))
                 opne.push([x, y - 1]);
-
+    //Høyre
     if (labyrinth[y][x + 1])
         if (y != prev[1] || x + 1 != prev[0])
             if (!(y == 14 && x + 1 == 34))
                 opne.push([x + 1, y]);
-
+    //Venstre
     if (labyrinth[y][x - 1])
         if (y != prev[1] || x - 1 != prev[0])
             if (!(y == 14 && x - 1 == 3))
@@ -177,16 +176,15 @@ class ghost {
             //vis spøkelset er redd pacman
             if (this.scared) {
                 var mulig = find_open(this.x, this.y, this.prev);
+                //Vis det er ingen muligheter gå tilbake
                 if (mulig.length == 0)
                     var temp = this.prev;
                 else {
                     //Koden under finner det kordinatet med mest heuristic verdi til målet
                     var temp = mulig[0];
-                    for (var i = 1; i < mulig.length; i++) {
-                        if (heuristic(mulig[i], this.corner) > heuristic(temp, goal)) {
+                    for (var i = 1; i < mulig.length; i++) 
+                        if (heuristic(mulig[i], this.corner) > heuristic(temp, goal)) 
                             temp = mulig[i];
-                        }
-                    }
                 }
                 this.prev = [this.x, this.y];
                 this.x = temp[0];
@@ -199,12 +197,11 @@ class ghost {
                 else {
                     //Koden under finner det kordinatet med mest heuristic verdi til målet
                     var temp = mulig[0];
-                    for (var i = 1; i < mulig.length; i++) {
-                        if (heuristic(mulig[i], this.corner) < heuristic(temp, this.corner)) {
+                    for (var i = 1; i < mulig.length; i++) 
+                        if (heuristic(mulig[i], this.corner) < heuristic(temp, this.corner)) 
                             temp = mulig[i];
-                        }
-                    }
                 }
+                //Sett kordinatene til spøkelset 
                 this.prev = [this.x, this.y];
                 this.x = temp[0];
                 this.y = temp[1];
@@ -218,11 +215,10 @@ class ghost {
                 else {
                     //Koden under finner det kordinatet med minst heuristic verdi til målet
                     var temp = mulig[0];
-                    for (var i = 1; i < mulig.length; i++) {
-                        if (heuristic(mulig[i], this.corner) > heuristic(temp, goal)) {
+                    for (var i = 1; i < mulig.length; i++) 
+                        if (heuristic(mulig[i], this.corner) > heuristic(temp, goal)) 
                             temp = mulig[i];
-                        }
-                    }
+                        
                 }
                 this.prev = [this.x, this.y];
                 this.x = temp[0];
@@ -236,11 +232,9 @@ class ghost {
                 else{
                     //Koden under finner det kordinatet med minst heuristic verdi til målet
                     var temp = mulig[0];
-                    for (var i = 1; i < mulig.length; i++) {
-                        if (heuristic(mulig[i], goal) < heuristic(temp, goal)) {
+                    for (var i = 1; i < mulig.length; i++) 
+                        if (heuristic(mulig[i], goal) < heuristic(temp, goal)) 
                             temp = mulig[i];
-                        }
-                    }
                 }
                 //sett kordinatetene til spøkelse
                 this.prev = [this.x, this.y];
@@ -282,7 +276,6 @@ var lower_left_beam = new Image();
 var lower_right_beam = new Image();
 var logo = new Image();
 var cherry = new Image();
-
 pellet.src = "./sprites/pellet.png";
 power_pellet.src = "sprites/power.png"
 vert_beam.src = "./sprites/beam.png";
@@ -321,26 +314,67 @@ function drawBack() {
     }
 }
 
+//Tar vekk powerup
 function removePower() {
     white.scared = false;
     grey.scared = false;
     green.scared = false;
     evil.scared = false;
+    white_sprite.image.src="sprites/white.png";
+    grey_sprite.image.src="sprites/grey.png";
+    green_sprite.image.src="sprites/green.png";
+    evil_sprite.image.src="sprites/evil.png";
 }
-
-function Power() { //TODO Add diff sprites to the ghosts when scared
+//Setter powerup
+function Power() { 
     white.scared = true;
     grey.scared = true;
     green.scared = true;
     evil.scared = true;
-    setTimeout(removePower,10000);
+    white_sprite.image.src="sprites/scared.png";
+    grey_sprite.image.src="sprites/scared.png";
+    green_sprite.image.src="sprites/scared.png";
+    evil_sprite.image.src="sprites/scared.png";
+    setTimeout(removePower,15000);
 }
-
+/*
+Fordeler med å bruke cookies:
+    Lett
+    Slipper å bruke server
+    Fungerer på alle nettlesere
+Ulemper med cookies:
+    Kan lett jukse til en highscore
+    Cookies blir slettet etter en stund
+*/
+//Setter inn highscores som en cookie 
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+//Skriver Highscorene i cookien til html 
+function setHighscores() {
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+        }
+        if (c=="null=10" || c=="d=1720") continue;
+        else document.getElementById("scores").innerHTML+= c.substring(0,c.length)+"<br>";
+    }
+}
+//Sjekker om det er gameover
 function GameOver() {
+    //Om du ikke har flere liv igjen
     if (lives == 0) {
+        var username=prompt("Username:");
+        setCookie(username,score,100);
         location.reload();
     }
-    if (pacman.x == white_sprite.x && pacman.y == white_sprite.y) {
+    //Sjekker om vi er i kontakt med spøkelser
+    if (pacman.x == white_sprite.x && pacman.y == white_sprite.y || pacman.x==white.prev[0]*sqaure && pacman.y==white.prev[1]*sqaure) {
         if (white.scared){
             white.x=1500000;
             score+=500
@@ -350,10 +384,11 @@ function GameOver() {
             incrementScore();
             clearInterval(main);
             reset();
+            return
         }
         
     }
-    if (pacman.x == green_sprite.x && pacman.y == green_sprite.y) {
+    if (pacman.x == green_sprite.x && pacman.y == green_sprite.y|| pacman.x==green.prev[0]*sqaure && pacman.y==green.prev[1]*sqaure) {
         if (green.scared){
             green.x=1500000;
             score+=500
@@ -363,35 +398,39 @@ function GameOver() {
             incrementScore();
             clearInterval(main);
             reset();
+            return
         }
         
     }
-    if (pacman.x == grey_sprite.x && pacman.y == grey_sprite.y) {
+    if (pacman.x == grey_sprite.x && pacman.y == grey_sprite.y || pacman.x==grey.prev[0]*sqaure && pacman.y==grey.prev[1]*sqaure) {
         if (grey.scared){
             grey.x=1500000;
-            grey+=500
+            score+=500;
         }else{
             death_sound.play();
             lives--;
             incrementScore();
             clearInterval(main);
             reset();
+            return
         }
     }
-    if (pacman.x == evil_sprite.x && pacman.y == evil_sprite.y) {
+    if (pacman.x == evil_sprite.x && pacman.y == evil_sprite.y|| pacman.x==evil.prev[0]*sqaure && evil.y==white.prev[1]*sqaure) {
         if (evil.scared){
             evil.x=1500000;
-            score+=500
+            score+=500;
         }else{
             death_sound.play();
             lives--;
             incrementScore();
             clearInterval(main);
             reset();
+            return
         }
     }
 }
 
+//sjekker for vegger
 function check_movement(object) {
     if(vel_x>0) var x = Math.round(object.x / sqaure);
     else var x = Math.floor(object.x / sqaure);
@@ -442,7 +481,8 @@ function start() {
     //TODO: Make a functioning start and pause screen
     drawBack();
     setInterval(main, 1000 / 10);
-    start_sound.play()
+    start_sound.play();
+    setHighscores();
 }
 start();
 //Main function
@@ -536,48 +576,56 @@ function reset() {
 function keyPress(evt) {
     switch (evt.keyCode) {
         case 37:
+            pacman.image.src="sprites/test2.png";
             prev_vel_x = vel_x;
             prev_vel_y = vel_y;
             vel_y = 0;
             vel_x = -1;
             break;
         case 38:
+            pacman.image.src="sprites/test3.png";
             prev_vel_x = vel_x;
             prev_vel_y = vel_y;
             vel_y = -1;
             vel_x = 0;
             break;
         case 39:
+            pacman.image.src="sprites/test.png";
             prev_vel_x = vel_x;
             prev_vel_y = vel_y;
             vel_x = 1;
             vel_y = 0;
             break;
         case 40:
+            pacman.image.src="sprites/test1.png";
             prev_vel_x = vel_x;
             prev_vel_y = vel_y;
             vel_y = 1;
             vel_x = 0;
             break;
         case 87:
+            pacman.image.src="sprites/test3.png";
             prev_vel_x = vel_x;
             prev_vel_y = vel_y;
             vel_y = -1;
             vel_x = 0;
             break;
         case 65:
+            pacman.image.src="sprites/test2.png";
             prev_vel_x = vel_x;
             prev_vel_y = vel_y;
             vel_x = -1;
             vel_y = 0;
             break;
         case 83:
+            pacman.image.src="sprites/test1.png";
             prev_vel_x = vel_x;
             prev_vel_y = vel_y;
             vel_y = 1;
             vel_x = 0;
             break;
         case 68:
+            pacman.image.src="sprites/test.png";
             prev_vel_x = vel_x;
             prev_vel_y = vel_y;
             vel_x = 1;

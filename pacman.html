@@ -16,7 +16,7 @@
     }
 
     #labyrinth {
-        margin: 0 15%;
+        margin: 0 20%;
     }
 
     #lives {
@@ -26,12 +26,18 @@
     }
 </style>
 <div id="scorebox">
+    <h1>Score</h1>
     <div id="score">0</div>
+    
     Lives:
     <div id="lives">
         <img src="sprites/pacman.png">
         <img src="sprites/pacman.png">
         <img src="sprites/pacman.png">
+    </div>
+    <div id="highscores">
+        <h1>Highscores</h1>
+        <p id="scores"></p>
     </div>
 </div>
 <canvas id="labyrinth" height="700" width="875"></canvas>
