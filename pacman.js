@@ -1,16 +1,15 @@
-//TODO: Bevegelsene til pack man er litt rustne, og det er vanskelig å ikke krasje i vegger
-//TODO: Noen ganger fungerer ikke kollisjonen mellom spøkelsene og pacman
-//TODO: Forskjellige sprites for de forskjellige fasene til spøkelsene 
+//TODO: Bevegelsene til pacman er litt for raske, og det er vanskelig å ikke krasje i vegger
+//TODO: Noen ganger fungerer ikke kollisjonen mellom spøkelsene og pacman, vet ikke hvorfor
 document.addEventListener("keydown", keyPress);
-var can = document.getElementById("labyrinth");
-var ctx = can.getContext("2d");
+const can = document.getElementById("labyrinth");
+const ctx = can.getContext("2d");
 //En tile i pacman er 25x25 pixler
-var sqaure = 25;
+const sqaure = 25;
 //Svart bakgrunn
 ctx.fillStyle = "black"
 ctx.fillRect(0, 0, can.width, can.height);
 //Et kart over hvor vegger er
-var labyrinth = [
+const labyrinth = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
     [0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
@@ -42,7 +41,7 @@ var labyrinth = [
     
 ]
 //Et kart over hvor alle bakgrunnsspritene skal være 
-var sprite_map = [
+const sprite_map = [
     ["ulb", "hb", "hb", "hb", "hb", "hb", "urb", "0", "ulb", "hb", "hb", "hb", "hb", "hb", "urb", "vb", 1, "vb", "ulb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "hb", "urb"],
     ["vb", "p", "p", "p", "p", "p", "dlb", "hb", "drb", "p", "p", "p", "p", "p", "vb", "vb", 1, "vb", "vb", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "vb"],
     ["vb", "p", "ulb", "hb", "hb", "p", "p", "p", "p", "p", "ulb", "hb", "urb", "p", "vb", "vb", 1, "vb", "vb", "p", "img", 0, 0, 0, 0, 0, 0, 0, "p", "ulb", "hb", "hb", "urb", "p", "vb"],
@@ -75,10 +74,10 @@ var sprite_map = [
 
 //Audio shit
 
-var eating_sound= new Audio("sounds/eat.mp3");
+const eating_sound= new Audio("sounds/eat.mp3");
 eating_sound.playbackRate=2;
-var start_sound = new Audio("sounds/start.mp3");
-var death_sound = new Audio("sounds/death.mp3");
+const start_sound = new Audio("sounds/start.mp3");
+const death_sound = new Audio("sounds/death.mp3");
 
 //Pacman klassen
 class pac {
@@ -175,14 +174,15 @@ class ghost {
         if (this.scatter) {
             //vis spøkelset er redd pacman
             if (this.scared) {
-                var mulig = find_open(this.x, this.y, this.prev);
+                let mulig = find_open(this.x, this.y, this.prev);
                 //Vis det er ingen muligheter gå tilbake
+                let temp;
                 if (mulig.length == 0)
-                    var temp = this.prev;
+                    temp = this.prev;
                 else {
                     //Koden under finner det kordinatet med mest heuristic verdi til målet
-                    var temp = mulig[0];
-                    for (var i = 1; i < mulig.length; i++) 
+                    temp = mulig[0];
+                    for (let i = 1; i < mulig.length; i++) 
                         if (heuristic(mulig[i], this.corner) > heuristic(temp, goal)) 
                             temp = mulig[i];
                 }
@@ -191,13 +191,13 @@ class ghost {
                 this.y = temp[1];
             } else {
                 //Alle mulige steder spøkelset kan gå 
-                var mulig = find_open(this.x, this.y, this.prev);
+                let mulig = find_open(this.x, this.y, this.prev);
                 if (mulig.length == 0)
-                    var temp = this.prev;
+                    let temp = this.prev;
                 else {
                     //Koden under finner det kordinatet med mest heuristic verdi til målet
-                    var temp = mulig[0];
-                    for (var i = 1; i < mulig.length; i++) 
+                    let temp = mulig[0];
+                    for (let i = 1; i < mulig.length; i++) 
                         if (heuristic(mulig[i], this.corner) < heuristic(temp, this.corner)) 
                             temp = mulig[i];
                 }
@@ -209,13 +209,13 @@ class ghost {
         } else {
             //vis spøkelset er redd pacman
             if (this.scared) {
-                var mulig = find_open(this.x, this.y, this.prev);
+                let mulig = find_open(this.x, this.y, this.prev);
                 if (mulig.length == 0)
-                    var temp = this.prev;
+                    let temp = this.prev;
                 else {
                     //Koden under finner det kordinatet med minst heuristic verdi til målet
-                    var temp = mulig[0];
-                    for (var i = 1; i < mulig.length; i++) 
+                    let temp = mulig[0];
+                    for (let i = 1; i < mulig.length; i++) 
                         if (heuristic(mulig[i], this.corner) > heuristic(temp, goal)) 
                             temp = mulig[i];
                         
@@ -225,14 +225,14 @@ class ghost {
                 this.y = temp[1];
             } else {
                 //Alle mulige steder spøkelset kan gå 
-                var mulig = find_open(this.x, this.y, this.prev);
+                let mulig = find_open(this.x, this.y, this.prev);
                 //Vis det ikke er noen steder å gå for spøkelset
                 if (mulig.length == 0)
-                    var temp = this.prev;
+                    let temp = this.prev;
                 else{
                     //Koden under finner det kordinatet med minst heuristic verdi til målet
-                    var temp = mulig[0];
-                    for (var i = 1; i < mulig.length; i++) 
+                    let temp = mulig[0];
+                    for (let i = 1; i < mulig.length; i++) 
                         if (heuristic(mulig[i], goal) < heuristic(temp, goal)) 
                             temp = mulig[i];
                 }
@@ -247,35 +247,35 @@ class ghost {
 
 
 //Sprites
-var pacman = new pac(sqaure, sqaure, "./sprites/test.png", 25, 25);
+const pacman = new pac(sqaure, sqaure, "./sprites/test.png", 25, 25);
 //Nødvendige variabler
-var vel_x = 0;
-var vel_y = 0;
-var score = 0;
-var lives = 3;
-var prev_vel_x = 0;
-var prev_vel_y = 0;
+let vel_x = 0;
+let vel_y = 0;
+let score = 0;
+let lives = 3;
+let prev_vel_x = 0;
+let prev_vel_y = 0;
 //Ghosts
-var white = new ghost(16, 14, [3, 4]);
-var green = new ghost(14, 15, [33, 5]);
-var grey = new ghost(15, 14, [1, 20]);
-var evil = new ghost(17, 17, [33, 33]);
-var white_sprite = new sprite(sqaure, sqaure, "sprites/white.png", white.x * sqaure, white.y * sqaure);
-var green_sprite = new sprite(sqaure, sqaure, "sprites/green.png", green.x * sqaure, green.y * sqaure);
-var grey_sprite = new sprite(sqaure, sqaure, "sprites/grey.png", grey.x * sqaure, grey.y * sqaure);
-var evil_sprite = new sprite(sqaure, sqaure, "sprites/evil.png", evil.x * sqaure, evil.y * sqaure);
+const white = new ghost(16, 14, [3, 4]);
+const green = new ghost(14, 15, [33, 5]);
+const grey = new ghost(15, 14, [1, 20]);
+const evil = new ghost(17, 17, [33, 33]);
+const white_sprite = new sprite(sqaure, sqaure, "sprites/white.png", white.x * sqaure, white.y * sqaure);
+const green_sprite = new sprite(sqaure, sqaure, "sprites/green.png", green.x * sqaure, green.y * sqaure);
+const grey_sprite = new sprite(sqaure, sqaure, "sprites/grey.png", grey.x * sqaure, grey.y * sqaure);
+const evil_sprite = new sprite(sqaure, sqaure, "sprites/evil.png", evil.x * sqaure, evil.y * sqaure);
 
 //Bakgrunn sprites
-var pellet = new Image();
-var power_pellet = new Image();
-var vert_beam = new Image();
-var hori_beam = new Image();
-var upper_left_beam = new Image();
-var upper_right_beam = new Image();
-var lower_left_beam = new Image();
-var lower_right_beam = new Image();
-var logo = new Image();
-var cherry = new Image();
+const pellet = new Image();
+const power_pellet = new Image();
+const vert_beam = new Image();
+const hori_beam = new Image();
+const upper_left_beam = new Image();
+const upper_right_beam = new Image();
+const lower_left_beam = new Image();
+const lower_right_beam = new Image();
+const logo = new Image();
+const cherry = new Image();
 pellet.src = "./sprites/pellet.png";
 power_pellet.src = "sprites/power.png"
 vert_beam.src = "./sprites/beam.png";
@@ -288,8 +288,8 @@ logo.src = "./sprites/logo.png"
 cherry.src = "./sprites/cherry.png"
 //Tegner bakgrunn
 function drawBack() {
-    for (var iy = 0; iy < can.height / sqaure; iy++) {
-        for (var ix = 0; ix < can.width / sqaure; ix++) {
+    for (let iy = 0; iy < can.height / sqaure; iy++) {
+        for (let ix = 0; ix < can.width / sqaure; ix++) {
             if (sprite_map[iy][ix] == "p")
                 ctx.drawImage(pellet, ix * sqaure, iy * sqaure, sqaure, sqaure);
             else if (sprite_map[iy][ix] == "pp")
@@ -348,18 +348,18 @@ Ulemper med cookies:
 */
 //Setter inn highscores som en cookie 
 function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
+    const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires="+d.toUTCString();
+    const expires = "expires="+d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 //Skriver Highscorene i cookien til html 
 function setHighscores() {
-    var ca = document.cookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
-        var c = ca[i];
+    let ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
         while (c.charAt(0) == ' ') {
-        c = c.substring(1);
+            c = c.substring(1);
         }
         if (c=="null=10" || c=="d=1720") continue;
         else document.getElementById("scores").innerHTML+= c.substring(0,c.length)+"<br>";
@@ -369,7 +369,7 @@ function setHighscores() {
 function GameOver() {
     //Om du ikke har flere liv igjen
     if (lives == 0) {
-        var username=prompt("Username:");
+        let username=prompt("Username:");
         setCookie(username,score,100);
         location.reload();
     }
@@ -432,10 +432,11 @@ function GameOver() {
 
 //sjekker for vegger
 function check_movement(object) {
-    if(vel_x>0) var x = Math.round(object.x / sqaure);
-    else var x = Math.floor(object.x / sqaure);
-    if (vel_y>0) var y = Math.round(object.y / sqaure);
-    else var y = Math.floor(object.y / sqaure);
+    let x,y;
+    if(vel_x>0) x = Math.round(object.x / sqaure);
+    else x = Math.floor(object.x / sqaure);
+    if (vel_y>0) y = Math.round(object.y / sqaure);
+    else y = Math.floor(object.y / sqaure);
     if (y == 14 && x == 0) {
         object.x = 35 * sqaure;
     }
@@ -475,7 +476,6 @@ function incrementScore() {
     document.getElementById("score").innerHTML = score;
 }
 
-
 //Start funksjon
 function start() {
     //TODO: Make a functioning start and pause screen
@@ -484,9 +484,8 @@ function start() {
     start_sound.play();
     setHighscores();
 }
-start();
-//Main function
 
+//Main function
 function main() {
     drawBack();
     ctx.clearRect(pacman.x, pacman.y, sqaure, sqaure);
@@ -572,7 +571,7 @@ function reset() {
     evil_sprite.y = evil.y * sqaure;
 }
 
-//Keyboard 
+//Keyboard event handler
 function keyPress(evt) {
     switch (evt.keyCode) {
         case 37:
@@ -632,4 +631,8 @@ function keyPress(evt) {
             vel_y = 0;
             break;
     }
+}
+//Start pacman
+window.onload=function(){
+    start();
 }
