@@ -192,11 +192,12 @@ class ghost {
             } else {
                 //Alle mulige steder spøkelset kan gå 
                 let mulig = find_open(this.x, this.y, this.prev);
+                let temp;
                 if (mulig.length == 0)
-                    let temp = this.prev;
+                    temp = this.prev;
                 else {
                     //Koden under finner det kordinatet med mest heuristic verdi til målet
-                    let temp = mulig[0];
+                    temp = mulig[0];
                     for (let i = 1; i < mulig.length; i++) 
                         if (heuristic(mulig[i], this.corner) < heuristic(temp, this.corner)) 
                             temp = mulig[i];
