@@ -211,11 +211,12 @@ class ghost {
             //vis spøkelset er redd pacman
             if (this.scared) {
                 let mulig = find_open(this.x, this.y, this.prev);
+                let temp;
                 if (mulig.length == 0)
-                    let temp = this.prev;
+                    temp = this.prev;
                 else {
                     //Koden under finner det kordinatet med minst heuristic verdi til målet
-                    let temp = mulig[0];
+                    temp = mulig[0];
                     for (let i = 1; i < mulig.length; i++) 
                         if (heuristic(mulig[i], this.corner) > heuristic(temp, goal)) 
                             temp = mulig[i];
@@ -227,12 +228,13 @@ class ghost {
             } else {
                 //Alle mulige steder spøkelset kan gå 
                 let mulig = find_open(this.x, this.y, this.prev);
+                let temp;
                 //Vis det ikke er noen steder å gå for spøkelset
                 if (mulig.length == 0)
-                    let temp = this.prev;
+                    temp = this.prev;
                 else{
                     //Koden under finner det kordinatet med minst heuristic verdi til målet
-                    let temp = mulig[0];
+                    temp = mulig[0];
                     for (let i = 1; i < mulig.length; i++) 
                         if (heuristic(mulig[i], goal) < heuristic(temp, goal)) 
                             temp = mulig[i];
